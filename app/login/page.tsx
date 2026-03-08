@@ -54,7 +54,16 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError("Invalid username or password");
+        // Handle specific error messages from auth
+        if (result.error.includes("suspended")) {
+          setError("Your account has been suspended. Contact admin.");
+        } else if (result.error.includes("blocked")) {
+          setError("Your account has been blocked. Contact admin.");
+        } else if (result.error.includes("blacklisted")) {
+          setError("Your account has been blacklisted.");
+        } else {
+          setError("Invalid username or password");
+        }
         setIsLoading(false);
         return;
       }

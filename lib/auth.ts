@@ -9,6 +9,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
     signIn: "/login",
@@ -35,6 +36,16 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Check user status
+        if (user.status !== "ACTIVE") {
+          throw new Error(
+            user.status === "SUSPENDED" ? "Account suspended" :
+            user.status === "BLOCKED" ? "Account blocked" :
+            user.status === "BLACKLISTED" ? "Account blacklisted" :
+            "Account inactive"
+          );
+        }
+
         const passwordValid = await compare(
           credentials.password,
           user.password
@@ -44,12 +55,18 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Update last login
+        await db.user.update({
+          where: { id: user.id },
+          data: { lastLoginAt: new Date() },
+        });
+
         return {
           id: user.id,
           username: user.username,
           name: user.name,
           role: user.role,
-          // allowedSections may be empty (meaning all) or a subset for supervisors
+          status: user.status,
           allowedSections: (user as any).allowedSections ?? [],
         } as any;
       },
@@ -62,16 +79,18 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.username = token.username;
         session.user.role = token.role;
+        session.user.status = (token as any).status;
         (session.user as any).allowedSections = (token as any).allowedSections ?? [];
       }
       return session;
     },
-    async jwt({ token, user }: { token: any, user?: { id: string, name: string, username: string, role: string, allowedSections?: string[] } }) {
+    async jwt({ token, user }: { token: any, user?: any }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.username = user.username;
         token.role = user.role;
+        token.status = user.status;
         (token as any).allowedSections = user.allowedSections ?? [];
       }
       return token;

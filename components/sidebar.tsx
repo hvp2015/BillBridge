@@ -23,6 +23,7 @@ import {
   DollarSign,
   ChevronLeft,
   ChevronRight,
+  Shield,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useSidebar } from "@/contexts/sidebar-context";
@@ -207,7 +208,7 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-accent",
                 pathname === item.href || pathname.startsWith(`${item.href}/`)
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground",
                 sidebarCollapsed ? "justify-center" : ""
               )}
@@ -219,6 +220,22 @@ export function Sidebar() {
           ))}
         </nav>
       </ScrollArea>
+
+      {isAdmin && (
+        <div className="border-t px-2 py-2">
+          <Link
+            href="/admin"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-primary/10 text-primary",
+              sidebarCollapsed ? "justify-center" : ""
+            )}
+            title={sidebarCollapsed ? "Admin Panel" : undefined}
+          >
+            <Shield className="h-5 w-5" />
+            {!sidebarCollapsed && "Admin Panel"}
+          </Link>
+        </div>
+      )}
     </>
   );
 

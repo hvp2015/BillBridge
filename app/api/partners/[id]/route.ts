@@ -11,15 +11,18 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       return new NextResponse("Unauthorized", { status: 401 })
     }
 
-    // Check if partner is in use
-    const inUse = await db.purchase.findFirst({
-      where: {
-        partnerId: params.id,
-      },
-    })
+    // Check if partner is in use (purchases or invoices)
+    const [hasPurchases, hasInvoices] = await Promise.all([
+      db.purchase.findFirst({
+        where: { partnerId: params.id },
+      }),
+      db.invoice.findFirst({
+        where: { partnerId: params.id },
+      }),
+    ])
 
-    if (inUse) {
-      return new NextResponse("Cannot delete partner that has transactions", { status: 400 })
+    if (hasPurchases || hasInvoices) {
+      return new NextResponse("Cannot delete partner that has transactions or invoices", { status: 400 })
     }
 
     const partner = await db.partner.delete({

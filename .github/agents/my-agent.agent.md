@@ -4,8 +4,6 @@
 # To make this agent available, merge this file into the default repository branch.
 # For format details, see: https://gh.io/customagents/config
 
-name:
-description:
 ---
 
 # My Agent
@@ -146,3 +144,137 @@ Transform this project into a high-quality, production-ready application with:
 - professional design
 
 All while preserving every existing feature.
+
+
+
+
+# NEW MAJOR FEATURE: ADMIN PANEL
+
+You must design and implement a separate ADMIN PANEL for system administrators.
+
+This admin panel must be completely separated from the normal user interface.
+
+Users must NOT be able to access the admin panel.
+
+Only authenticated administrators with proper privileges can access it.
+
+The admin panel must be professional, secure, and easy to use.
+
+# ADMIN PANEL OBJECTIVES
+
+Provide administrators with full system visibility and management capabilities.
+
+The admin should be able to monitor platform usage, manage users, and maintain system health.
+
+The admin panel should include analytics dashboards, user management tools, and system controls.
+
+# ADMIN AUTHENTICATION
+
+Admin authentication must follow strict security rules:
+
+- Admin login must be separate from normal user login
+- Role-based access control must be implemented
+- Admin sessions must be securely handled
+- Use secure authentication methods
+
+IMPORTANT RULE:
+Admins must NOT be able to see or retrieve user passwords.
+
+Passwords must remain securely hashed and inaccessible even to administrators.
+
+# USER MANAGEMENT FEATURES
+
+The admin panel must allow administrators to:
+
+- View all users
+- Search users
+- View user profiles
+- See user activity and usage statistics
+
+Admin controls for each user:
+
+- Create user
+- Edit user details
+- Suspend account
+- Block login
+- Blacklist account
+- Reactivate account
+- Delete account (if necessary)
+
+# USER ANALYTICS & PLATFORM STATS
+
+Provide a dashboard showing:
+
+- total users
+- active users
+- new user registrations
+- user activity
+- feature usage statistics
+- system usage trends
+
+The admin should easily understand how the platform is being used.
+
+# SECURITY RULES
+
+Admin capabilities must follow strict security constraints:
+
+Admins CAN:
+- manage accounts
+- monitor usage
+- enforce restrictions
+
+Admins CANNOT:
+- view user passwords
+- retrieve authentication secrets
+- bypass security protections
+
+All sensitive data must remain encrypted or hashed.
+
+# ADMIN PANEL DESIGN
+
+The admin panel must be:
+
+- clean
+- professional
+- dashboard-oriented
+- data-focused
+- efficient for administrators
+
+Use modern UI patterns such as:
+
+- dashboards
+- analytics cards
+- user tables
+- filters and search
+- activity logs
+
+# ACTIVITY LOGGING
+
+The system must log important admin actions:
+
+- user creation
+- suspensions
+- blacklist actions
+- permission changes
+- security actions
+
+These logs help maintain accountability.
+
+# STRUCTURE
+
+The admin panel should ideally include:
+
+Admin Dashboard  
+User Management  
+Analytics / Statistics  
+Activity Logs  
+System Settings
+
+# FINAL REQUIREMENT
+
+The admin panel must integrate cleanly with the existing system architecture while maintaining strict separation between:
+
+- User interface
+- Admin interface
+
+The system must remain secure, scalable, and maintainable.

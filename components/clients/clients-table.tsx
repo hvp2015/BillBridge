@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { Edit, Eye, Phone, Search, Trash } from "lucide-react"
 import Link from "next/link"
 import Pagination from "@/components/ui/pagination"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 interface Client {
   id: string
@@ -29,6 +32,10 @@ export function ClientsTable({ clients }: ClientsTableProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [deleteTarget, setDeleteTarget] = useState<Client | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const { toast } = useToast()
+  const router = useRouter()
 
   // Filter clients based on search term
   const filteredClients = useMemo(() => {
@@ -120,7 +127,7 @@ export function ClientsTable({ clients }: ClientsTableProps) {
                           <span className="sr-only">Edit</span>
                         </Button>
                       </Link>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(client)}>
                         <Trash className="h-4 w-4" />
                         <span className="sr-only">Delete</span>
                       </Button>
@@ -142,6 +149,49 @@ export function ClientsTable({ clients }: ClientsTableProps) {
           pageSizeOptions={[10, 30, 50, 100]}
         />
       )}
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Client</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete &quot;{deleteTarget?.name}&quot;? This action cannot be undone.
+              {(deleteTarget?._count?.invoices ?? 0) > 0 && (
+                <span className="block mt-2 text-destructive font-medium">
+                  This client has {deleteTarget?._count.invoices} invoice(s) and cannot be deleted.
+                </span>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isDeleting || (deleteTarget?._count?.invoices ?? 0) > 0}
+              onClick={async (e) => {
+                e.preventDefault()
+                if (!deleteTarget) return
+                setIsDeleting(true)
+                try {
+                  const res = await fetch(`/api/partners/${deleteTarget.id}`, { method: "DELETE" })
+                  if (!res.ok) {
+                    const msg = await res.text()
+                    throw new Error(msg)
+                  }
+                  toast({ title: "Client deleted successfully" })
+                  setDeleteTarget(null)
+                  router.refresh()
+                } catch (err: any) {
+                  toast({ title: "Error", description: err.message, variant: "destructive" })
+                } finally {
+                  setIsDeleting(false)
+                }
+              }}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

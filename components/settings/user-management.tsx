@@ -68,23 +68,6 @@ export function UserManagement() {
       if (!res.ok) throw new Error()
       const data = await res.json()
       setUsers(data)
-
-      // After users are loaded, hydrate plainPasswords from localStorage
-      try {
-        const restored: { [id: string]: string } = {}
-        data.forEach((user: any) => {
-          const key = `user_password_${user.id}`
-          const stored = window.localStorage.getItem(key)
-          if (stored) {
-            restored[user.id] = stored
-          }
-        })
-        if (Object.keys(restored).length > 0) {
-          setPlainPasswords(restored)
-        }
-      } catch {
-        // localStorage may be unavailable; ignore
-      }
     } catch {
       toast({ title: "Error", description: "Failed to fetch users.", variant: "destructive" })
     } finally {
@@ -175,17 +158,6 @@ export function UserManagement() {
       setSelectedUser(null)
       setFormData({ name: "", username: "", role: "SUPERVISOR", password: "", allowedSections: allSectionIds })
       fetchUsers()
-      // Store plain password for this user (only if just set), in state and localStorage
-      if (formData.password.trim()) {
-        const plain = formData.password.trim()
-        setPlainPasswords((prev) => ({ ...prev, [user.id]: plain }))
-        try {
-          const key = `user_password_${user.id}`
-          window.localStorage.setItem(key, plain)
-        } catch {
-          // ignore storage errors
-        }
-      }
     } catch (error: any) {
       toast({ title: "Error", description: error.message || `Failed to ${isEditing ? "update" : "create"} user.`, variant: "destructive" })
     } finally {
@@ -320,7 +292,6 @@ export function UserManagement() {
                 <TableHead>Username</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Created</TableHead>
-                <TableHead>Password</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -333,12 +304,11 @@ export function UserManagement() {
                     <TableCell><div className="h-4 bg-muted rounded w-20 animate-pulse" /></TableCell>
                     <TableCell><div className="h-4 bg-muted rounded w-16 animate-pulse" /></TableCell>
                     <TableCell><div className="h-4 bg-muted rounded w-20 animate-pulse" /></TableCell>
-                    <TableCell><div className="h-4 bg-muted rounded w-16 animate-pulse" /></TableCell>
                     <TableCell className="text-right"><div className="h-4 bg-muted rounded w-16 animate-pulse ml-auto" /></TableCell>
                   </TableRow>
                 ))
               ) : users.length === 0 ? (
-                <TableRow><TableCell colSpan={6}>No users found.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5}>No users found.</TableCell></TableRow>
               ) : (
                 users.map((user) => (
                   <TableRow key={user.id}>
@@ -348,29 +318,6 @@ export function UserManagement() {
                       <Badge variant={user.role === "ADMIN" ? "default" : "secondary"}>{user.role}</Badge>
                     </TableCell>
                     <TableCell>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <TooltipProvider>
-                          <span>{getPasswordDisplay(user)}</span>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                onClick={() => togglePasswordVisibility(user.id)}
-                              >
-                                {visiblePasswords[user.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              {canTogglePassword(user)
-                                ? "Show/Hide password (stored locally on this browser)"
-                                : "Password is hidden. Set or update it to make it viewable here."}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="ghost" size="icon" onClick={() => openEditDialog(user)}>

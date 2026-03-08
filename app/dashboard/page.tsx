@@ -1,8 +1,5 @@
 import { Metadata } from "next";
-import { SalesChart } from "@/components/dashboard/sales-chart";
-import { ProductionChart } from "@/components/dashboard/production-chart";
-import { StockByLocationChart } from "@/components/dashboard/stock-by-location-chart";
-import { LowStockAlerts } from "@/components/dashboard/low-stock-alerts";
+import dynamic from "next/dynamic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Warehouse,
@@ -14,6 +11,37 @@ import {
 } from "lucide-react";
 import { db } from "@/lib/db";
 import { I18nHeading } from "@/components/i18n/i18n-heading";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const SalesChart = dynamic(
+  () => import("@/components/dashboard/sales-chart").then((m) => m.SalesChart),
+  { loading: () => <ChartSkeleton /> }
+);
+const ProductionChart = dynamic(
+  () => import("@/components/dashboard/production-chart").then((m) => m.ProductionChart),
+  { loading: () => <ChartSkeleton /> }
+);
+const StockByLocationChart = dynamic(
+  () => import("@/components/dashboard/stock-by-location-chart").then((m) => m.StockByLocationChart),
+  { loading: () => <ChartSkeleton /> }
+);
+const LowStockAlerts = dynamic(
+  () => import("@/components/dashboard/low-stock-alerts").then((m) => m.LowStockAlerts),
+  { loading: () => <ChartSkeleton /> }
+);
+
+function ChartSkeleton() {
+  return (
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-5 w-32" />
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="h-[250px] w-full rounded" />
+      </CardContent>
+    </Card>
+  );
+}
 
 export const metadata: Metadata = {
   title: "Dashboard",
