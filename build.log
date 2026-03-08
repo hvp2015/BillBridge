@@ -1,0 +1,98 @@
+
+> my-v0-project@0.1.0 build
+> prisma generate && next build
+
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.9.0) to ./node_modules/@prisma/client in 111ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+   ▲ Next.js 15.3.3
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 3.0s
+
+./components/clients/clients-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/clients/clients-table.tsx
+
+./components/production/production-batches-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/production/production-batches-table.tsx
+
+./components/raw-materials/raw-materials-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/raw-materials/raw-materials-table.tsx
+
+./components/sales/sales-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/sales/sales-table.tsx
+
+./components/vendors/vendors-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/vendors/vendors-table.tsx
+
+ ⚠ Compiled with warnings in 2000ms
+
+./components/clients/clients-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/clients/clients-table.tsx
+
+./components/production/production-batches-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/production/production-batches-table.tsx
+
+./components/raw-materials/raw-materials-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/raw-materials/raw-materials-table.tsx
+
+./components/sales/sales-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/sales/sales-table.tsx
+
+./components/vendors/vendors-table.tsx
+Attempted import error: '@/components/ui/pagination' does not contain a default export (imported as 'Pagination').
+
+Import trace for requested module:
+./components/vendors/vendors-table.tsx
+
+ ✓ Compiled successfully in 5.0s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/50) ...
+Error occurred prerendering page "/dashboard/clients". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: Attempted to call useToast() from the server but useToast is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.
+    at /Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/.next/server/chunks/5348.js:1:10582
+    at w (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/.next/server/chunks/5348.js:1:6539)
+    at ek (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:13337)
+    at e (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:17246)
+    at e$ (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:17708)
+    at Array.toJSON (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:14854)
+    at stringify (<anonymous>)
+    at eF (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26079)
+    at eq (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26391)
+    at ez (/Users/harshalpimpalshende/VSCode and IDE/Bill-Bridge/BB/Bill-Bridge-main/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26887)
+Export encountered an error on /dashboard/clients/page: /dashboard/clients, exiting the build.
+ ⨯ Next.js build worker exited with code: 1 and signal: null
